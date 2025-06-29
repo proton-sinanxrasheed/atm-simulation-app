@@ -8,7 +8,7 @@ import Dashboard from './Dashboard';
 import ViewBalance from './ViewBalance';
 import DepositMoney from './DepositMoney';
 import WithdrawMoney from './WithdrawMoney';
-import { BalanceProvider } from './BalanceContext';
+import { BalanceProvider, useBalance } from './BalanceContext';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');

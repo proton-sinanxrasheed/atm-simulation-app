@@ -4,7 +4,7 @@ import { useBalance } from './BalanceContext';
 
 const DepositMoney = () => {
   const navigate = useNavigate();
-  const { depositMoney } = useBalance();
+  const { depositMoney, currentUser } = useBalance();
   const [amount, setAmount] = useState('');
 
   const handleBackClick = () => {
@@ -13,8 +13,8 @@ const DepositMoney = () => {
 
   const handleDeposit = () => {
     const amountToDeposit = parseFloat(amount);
-    if (!isNaN(amountToDeposit) && amountToDeposit > 0) {
-      depositMoney(amountToDeposit);
+    if (!isNaN(amountToDeposit) && amountToDeposit > 0 && currentUser) {
+      depositMoney(currentUser, amountToDeposit);
       setAmount('');
       navigate('/view-balance');
     }

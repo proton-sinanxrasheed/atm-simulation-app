@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useBalance } from './BalanceContext';
 
 interface LoginProps {
   onBack: () => void;
@@ -9,6 +10,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { setCurrentUser } = useBalance();
 
 const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +28,7 @@ const handleSubmit = (e: React.FormEvent) => {
       setError('Incorrect password');
       return;
     }
+    setCurrentUser(username);
     onLoginSuccess(user.name);
   };
 

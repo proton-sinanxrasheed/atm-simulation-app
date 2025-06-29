@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useBalance } from './BalanceContext';
 
 interface SignUpProps {
   onBack: () => void;
@@ -10,6 +11,7 @@ const SignUp: React.FC<SignUpProps> = ({ onBack, onSignUpSuccess }) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const { setCurrentUser } = useBalance();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ const SignUp: React.FC<SignUpProps> = ({ onBack, onSignUpSuccess }) => {
     }
     const user = { username, password, name };
     localStorage.setItem(username, JSON.stringify(user));
+    setCurrentUser(username);
     onSignUpSuccess(name);
   };
 
