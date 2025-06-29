@@ -12,6 +12,10 @@ const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!username || !password) {
+      setError('All fields are required');
+      return;
+    }
     const userData = localStorage.getItem(username);
     if (!userData) {
       setError('User not found');
@@ -42,6 +46,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             style={{ marginLeft: '10px' }}
+            required
           />
         </div>
         <div style={{ margin: '10px' }}>
@@ -53,6 +58,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={{ marginLeft: '10px' }}
+            required
           />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>

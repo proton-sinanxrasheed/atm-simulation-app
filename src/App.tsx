@@ -6,6 +6,7 @@ import Dashboard from './Dashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [name, setName] = useState('');
 
   const handleSignUpClick = () => {
     setCurrentPage('signup');
@@ -19,12 +20,17 @@ function App() {
     setCurrentPage('home');
   };
 
-  const handleSignUpSuccess = () => {
+  const handleSignUpSuccess = (userName: string) => {
+    setName(userName);
     setCurrentPage('dashboard');
   };
 
   const handleLoginSuccess = () => {
     setCurrentPage('dashboard');
+  };
+
+  const handleSignOut = () => {
+    setCurrentPage('home');
   };
 
   return (
@@ -40,7 +46,7 @@ function App() {
       )}
       {currentPage === 'signup' && <SignUp onBack={handleBackClick} onSignUpSuccess={handleSignUpSuccess} />}
       {currentPage === 'login' && <Login onBack={handleBackClick} onLoginSuccess={handleLoginSuccess} />}
-      {currentPage === 'dashboard' && <Dashboard />}
+      {currentPage === 'dashboard' && <Dashboard onSignOut={handleSignOut} name={name} />}
     </>
   );
 }
