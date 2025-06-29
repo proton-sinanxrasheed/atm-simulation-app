@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface LoginProps {
   onBack: () => void;
-  onLoginSuccess: () => void;
+  onLoginSuccess: (name: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
@@ -10,7 +10,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) {
       setError('All fields are required');
@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onLoginSuccess }) => {
       setError('Incorrect password');
       return;
     }
-    onLoginSuccess();
+    onLoginSuccess(user.name);
   };
 
   return (
