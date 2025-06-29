@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import SignUp from './SignUp';
 import Login from './Login';
+import Dashboard from './Dashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -18,6 +19,14 @@ function App() {
     setCurrentPage('home');
   };
 
+  const handleSignUpSuccess = () => {
+    setCurrentPage('dashboard');
+  };
+
+  const handleLoginSuccess = () => {
+    setCurrentPage('dashboard');
+  };
+
   return (
     <>
       {currentPage === 'home' && (
@@ -29,8 +38,9 @@ function App() {
           </div>
         </div>
       )}
-      {currentPage === 'signup' && <SignUp onBack={handleBackClick} />}
-      {currentPage === 'login' && <Login onBack={handleBackClick} />}
+      {currentPage === 'signup' && <SignUp onBack={handleBackClick} onSignUpSuccess={handleSignUpSuccess} />}
+      {currentPage === 'login' && <Login onBack={handleBackClick} onLoginSuccess={handleLoginSuccess} />}
+      {currentPage === 'dashboard' && <Dashboard />}
     </>
   );
 }
