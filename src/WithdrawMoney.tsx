@@ -6,6 +6,7 @@ const WithdrawMoney = () => {
   const navigate = useNavigate();
   const { withdrawMoney, currentUser } = useBalance();
   const [amount, setAmount] = useState('');
+  const [error, setError] = useState('');
 
   const handleBackClick = () => {
     navigate('/');
@@ -13,16 +14,21 @@ const WithdrawMoney = () => {
 
   const handleWithdraw = () => {
     const amountToWithdraw = parseFloat(amount);
-    if (!isNaN(amountToWithdraw) && amountToWithdraw > 0 && currentUser) {
-      const success = withdrawMoney(currentUser, amountToWithdraw);
-      if (success) {
-        setAmount('');
-        navigate('/view-balance');
-      } else {
-        alert('Insufficient funds');
-      }
+    if (isNaN(amountToWithdraw) || amountToWithdraw <= 0) {
+      setError('Please enter a valid positive amount.');
+      return;
+    }
+    if (!currentUser) {
+      setError('No user logged in.');
+      return;
+    }
+    const success = withdrawMoney(currentUser, amountToWithdraw);
+    if (success) {
+      setAmount('');
+      setError('');
+      navigate('/view-balance');
     } else {
-      alert('Invalid amount');
+      setError('Insufficient funds.');
     }
   };
 
@@ -39,10 +45,11 @@ const WithdrawMoney = () => {
       <button
         onClick={handleWithdraw}
         style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}
-      >
+        >
         Withdraw
       </button>
       <button onClick={handleBackClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}>Back</button>
+        {error && <div style={{ color: 'red', marginTop: '5px' }}>{error}</div>}
     </div>
   );
 };

@@ -6,6 +6,7 @@ const DepositMoney = () => {
   const navigate = useNavigate();
   const { depositMoney, currentUser } = useBalance();
   const [amount, setAmount] = useState('');
+  const [error, setError] = useState('');
 
   const handleBackClick = () => {
     navigate('/');
@@ -13,11 +14,18 @@ const DepositMoney = () => {
 
   const handleDeposit = () => {
     const amountToDeposit = parseFloat(amount);
-    if (!isNaN(amountToDeposit) && amountToDeposit > 0 && currentUser) {
-      depositMoney(currentUser, amountToDeposit);
-      setAmount('');
-      navigate('/view-balance');
+    if (isNaN(amountToDeposit) || amountToDeposit <= 0) {
+      setError('Please enter a valid positive amount.');
+      return;
     }
+    if (!currentUser) {
+      setError('No user logged in.');
+      return;
+    }
+    depositMoney(currentUser, amountToDeposit);
+    setAmount('');
+    setError('');
+    navigate('/view-balance');
   };
 
   return (
@@ -33,10 +41,11 @@ const DepositMoney = () => {
       <button
         onClick={handleDeposit}
         style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}
-      >
+        >
         Deposit
       </button>
       <button onClick={handleBackClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}>Back</button>
+        {error && <div style={{ color: 'red', marginTop: '5px' }}>{error}</div>}
     </div>
   );
 };
