@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 interface UserBalance {
   [username: string]: number;
@@ -26,9 +26,23 @@ interface BalanceContextType {
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
 
 export const BalanceProvider = ({ children }: { children: ReactNode }) => {
-  const [balances, setBalances] = useState<UserBalance>({});
+  const [balances, setBalances] = useState<UserBalance>(() => {
+    const stored = localStorage.getItem('balances');
+    return stored ? JSON.parse(stored) : {};
+  });
   const [currentUser, setCurrentUser] = useState<string | null>(null);
-  const [transactionHistory, setTransactionHistory] = useState<UserTransactions>({});
+  const [transactionHistory, setTransactionHistory] = useState<UserTransactions>(() => {
+    const stored = localStorage.getItem('transactionHistory');
+    return stored ? JSON.parse(stored) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem('balances', JSON.stringify(balances));
+  }, [balances]);
+
+  useEffect(() => {
+    localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
+  }, [transactionHistory]);
 
   const depositMoney = (username: string, amount: number) => {
     setBalances(prevBalances => ({
@@ -45,17 +59,26 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const withdrawMoney = (username: string, amount: number) => {
-    setBalances(prevBalances => ({
-      ...prevBalances,
-      [username]: (prevBalances[username] || 0) - amount
-    }));
-    setTransactionHistory(prevHistory => ({
-      ...prevHistory,
-      [username]: [
-        ...(prevHistory[username] || []),
-        { type: 'withdraw', amount, date: new Date().toISOString() }
-      ]
-    }));
+    setBalances(prevBalances => {
+      const currentBalance = prevBalances[username] || 0;
+      if (currentBalance < amount) {
+        // Not enough funds, do not withdraw
+        alert('Insufficient funds');
+        return prevBalances;
+      }
+      // Proceed with withdrawal
+      setTransactionHistory(prevHistory => ({
+        ...prevHistory,
+        [username]: [
+          ...(prevHistory[username] || []),
+          { type: 'withdraw', amount, date: new Date().toISOString() }
+        ]
+      }));
+      return {
+        ...prevBalances,
+        [username]: currentBalance - amount
+      };
+    });
   };
 
   const getTransactionHistory = () => {
