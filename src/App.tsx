@@ -8,6 +8,7 @@ import Dashboard from './Dashboard';
 import ViewBalance from './ViewBalance';
 import DepositMoney from './DepositMoney';
 import WithdrawMoney from './WithdrawMoney';
+import TransactionHistory from './TransactionHistory';
 import { BalanceProvider, useBalance } from './BalanceContext';
 
 function App() {
@@ -67,6 +68,7 @@ const handleLoginSuccess = (name: string) => {
           <Route path="/view-balance" element={<ViewBalance />} />
           <Route path="/deposit-money" element={<DepositMoney />} />
           <Route path="/withdraw-money" element={<WithdrawMoney />} />
+          <Route path="/transaction-history" element={<TransactionHistory />} />
         </Routes>
       </Router>
     </BalanceProvider>

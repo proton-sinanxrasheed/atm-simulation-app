@@ -14,11 +14,15 @@ const WithdrawMoney = () => {
   const handleWithdraw = () => {
     const amountToWithdraw = parseFloat(amount);
     if (!isNaN(amountToWithdraw) && amountToWithdraw > 0 && currentUser) {
-      withdrawMoney(currentUser, amountToWithdraw);
-      setAmount('');
-      navigate('/view-balance');
+      const success = withdrawMoney(currentUser, amountToWithdraw);
+      if (success) {
+        setAmount('');
+        navigate('/view-balance');
+      } else {
+        alert('Insufficient funds');
+      }
     } else {
-      alert('Invalid amount or insufficient balance');
+      alert('Invalid amount');
     }
   };
 

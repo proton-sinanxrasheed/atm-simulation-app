@@ -19,7 +19,7 @@ interface BalanceContextType {
   currentUser: string | null;
   setCurrentUser: (username: string) => void;
   depositMoney: (username: string, amount: number) => void;
-  withdrawMoney: (username: string, amount: number) => void;
+  withdrawMoney: (username: string, amount: number) => boolean;
   getTransactionHistory: () => Transaction[];
 }
 
@@ -58,27 +58,25 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const withdrawMoney = (username: string, amount: number) => {
-    setBalances(prevBalances => {
-      const currentBalance = prevBalances[username] || 0;
-      if (currentBalance < amount) {
-        // Not enough funds, do not withdraw
-        alert('Insufficient funds');
-        return prevBalances;
-      }
-      // Proceed with withdrawal
-      setTransactionHistory(prevHistory => ({
-        ...prevHistory,
-        [username]: [
-          ...(prevHistory[username] || []),
-          { type: 'withdraw', amount, date: new Date().toISOString() }
-        ]
-      }));
-      return {
-        ...prevBalances,
-        [username]: currentBalance - amount
-      };
-    });
+  const withdrawMoney = (username: string, amount: number): boolean => {
+    const currentBalance = balances[username] || 0;
+    if (currentBalance < amount) {
+      // Not enough funds, do not withdraw
+      return false;
+    }
+    // Proceed with withdrawal
+    setBalances(prevBalances => ({
+      ...prevBalances,
+      [username]: currentBalance - amount
+    }));
+    setTransactionHistory(prevHistory => ({
+      ...prevHistory,
+      [username]: [
+        ...(prevHistory[username] || []),
+        { type: 'withdraw', amount, date: new Date().toISOString() }
+      ]
+    }));
+    return true;
   };
 
   const getTransactionHistory = () => {

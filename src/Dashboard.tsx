@@ -21,6 +21,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onSignOut, name }) => {
     navigate('/withdraw-money');
   };
 
+  const handleTransactionHistoryClick = () => {
+    navigate('/transaction-history');
+  };
+
   const handleBackClick = () => {
     navigate('/');
   };
@@ -34,6 +38,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onSignOut, name }) => {
         <button onClick={handleViewBalanceClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px', width: '150px' }}>View Balance</button>
         <button onClick={handleDepositMoneyClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px', width: '150px' }}>Deposit Money</button>
         <button onClick={handleWithdrawMoneyClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px', width: '150px' }}>Withdraw Money</button>
+        <button onClick={handleTransactionHistoryClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px', width: '180px' }}>Transaction History</button>
       </div>
       <button onClick={onSignOut} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}>Sign Out</button>
     </div>
