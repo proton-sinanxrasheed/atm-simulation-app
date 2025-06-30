@@ -46,6 +46,10 @@ const TransactionHistory = () => {
   const uniqueDates = Array.from(new Set(userTransactions.map(t => new Date(t.date).toLocaleDateString())));
   const isDateSortable = uniqueDates.length > 1;
 
+  // Get unique AM/PM values
+  const uniqueAmPm = Array.from(new Set(userTransactions.map(t => (new Date(t.date).getHours() >= 12 ? 'PM' : 'AM'))));
+  const isAmPmSortable = uniqueAmPm.length > 1;
+
   const handleSort = (key: string) => {
     setSortConfig(prev => {
       if (prev.key === key) {
@@ -74,7 +78,11 @@ const TransactionHistory = () => {
                 <th style={{ padding: '8px', borderBottom: '2px solid #333', color: '#888' }}>Date</th>
               )}
               <th style={{ cursor: 'pointer', padding: '8px', borderBottom: '2px solid #333' }} onClick={() => handleSort('time')}>Time</th>
-              <th style={{ cursor: 'pointer', padding: '8px', borderBottom: '2px solid #333' }} onClick={() => handleSort('ampm')}>AM/PM</th>
+              {isAmPmSortable ? (
+                <th style={{ cursor: 'pointer', padding: '8px', borderBottom: '2px solid #333' }} onClick={() => handleSort('ampm')}>AM/PM</th>
+              ) : (
+                <th style={{ padding: '8px', borderBottom: '2px solid #333', color: '#888' }}>AM/PM</th>
+              )}
             </tr>
           </thead>
           <tbody>
