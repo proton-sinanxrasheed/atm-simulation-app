@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBalance } from './BalanceContext';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { Paper, Box, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 const WithdrawMoney = () => {
   const navigate = useNavigate();
@@ -33,24 +37,38 @@ const WithdrawMoney = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Withdraw Money</h1>
-      <p>Enter the amount you want to withdraw:</p>
-      <input
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        style={{ margin: '10px', padding: '10px', fontSize: '16px' }}
-      />
-      <button
-        onClick={handleWithdraw}
-        style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}
-        >
-        Withdraw
-      </button>
-      <button onClick={handleBackClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}>Back</button>
-        {error && <div style={{ color: 'red', marginTop: '5px' }}>{error}</div>}
-    </div>
+    <Box minHeight="70vh" display="flex" alignItems="center" justifyContent="center">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -40 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        style={{ width: '100%', minWidth: 600, maxWidth: 1000 }}
+      >
+        <Paper elevation={8} sx={{ p: 5, minWidth: 600, maxWidth: 1000, backdropFilter: 'blur(16px)', boxShadow: 12 }}>
+          <Typography variant="h4" fontWeight={700} mb={2} align="center">
+            Withdraw Money
+          </Typography>
+          <Typography mb={2} align="center">Enter the amount you want to withdraw:</Typography>
+          <Box mb={3}>
+            <TextField
+              label="Amount"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Box display="flex" justifyContent="center" gap={2}>
+            <Button variant="contained" color="warning" onClick={handleWithdraw}>Withdraw</Button>
+            <Button variant="outlined" color="secondary" onClick={handleBackClick} className="back-button">Back</Button>
+          </Box>
+          {error && <Typography color="error" align="center" mt={2}>{error}</Typography>}
+        </Paper>
+      </motion.div>
+    </Box>
   );
 };
 

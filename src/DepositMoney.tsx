@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBalance } from './BalanceContext';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { Paper, Box, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 const DepositMoney = () => {
   const navigate = useNavigate();
@@ -29,24 +33,37 @@ const DepositMoney = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Deposit Money</h1>
-      <p>Enter the amount you want to deposit:</p>
-      <input
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        style={{ margin: '10px', padding: '10px', fontSize: '16px' }}
-      />
-      <button
-        onClick={handleDeposit}
-        style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}
-        >
-        Deposit
-      </button>
-      <button onClick={handleBackClick} style={{ margin: '10px', padding: '10px 20px', fontSize: '16px' }}>Back</button>
-        {error && <div style={{ color: 'red', marginTop: '5px' }}>{error}</div>}
-    </div>
+    <Box minHeight="70vh" display="flex" alignItems="center" justifyContent="center">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{ width: '100%', maxWidth: 800 }}
+      >
+        <Paper elevation={8} sx={{ p: 5, backdropFilter: 'blur(16px)', boxShadow: 12 }}>
+          <Typography variant="h4" fontWeight={700} mb={2} align="center">
+            Deposit Money
+          </Typography>
+          <Typography mb={2} align="center">Enter the amount you want to deposit:</Typography>
+          <Box mb={3}>
+            <TextField
+              label="Amount"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Box display="flex" justifyContent="center" gap={2}>
+            <Button variant="contained" color="success" onClick={handleDeposit}>Deposit</Button>
+            <Button variant="outlined" color="secondary" onClick={handleBackClick} className="back-button">Back</Button>
+          </Box>
+          {error && <Typography color="error" align="center" mt={2}>{error}</Typography>}
+        </Paper>
+      </motion.div>
+    </Box>
   );
 };
 
