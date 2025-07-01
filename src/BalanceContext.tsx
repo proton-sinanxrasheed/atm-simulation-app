@@ -61,10 +61,10 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   const withdrawMoney = (username: string, amount: number): boolean => {
     const currentBalance = balances[username] || 0;
     if (currentBalance < amount) {
-      // Not enough funds, do not withdraw
+
       return false;
     }
-    // Proceed with withdrawal
+
     setBalances(prevBalances => ({
       ...prevBalances,
       [username]: currentBalance - amount

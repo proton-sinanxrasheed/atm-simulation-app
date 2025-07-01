@@ -16,11 +16,11 @@ const TransactionHistory = () => {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [page, setPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(PAGE_SIZE_OPTIONS[1]); // default 10
+  const [itemsPerPage, setItemsPerPage] = useState(PAGE_SIZE_OPTIONS[1]);
 
   const userTransactions = getTransactionHistory();
 
-  // Filter by date range
+  
   const filteredTransactions = userTransactions.filter(t => {
     const txDate = new Date(t.date);
     const from = fromDate ? new Date(fromDate) : null;
@@ -30,7 +30,7 @@ const TransactionHistory = () => {
     return true;
   });
 
-  // Sort
+  
   const sortedTransactions = [...filteredTransactions].sort((a, b) => {
     let aValue: any = a;
     let bValue: any = b;
@@ -63,15 +63,15 @@ const TransactionHistory = () => {
     return 0;
   });
 
-  // Pagination
+  
   const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
   const paginatedTransactions = sortedTransactions.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-  // Get unique dates
+  
   const uniqueDates = Array.from(new Set(userTransactions.map(t => new Date(t.date).toLocaleDateString())));
   const isDateSortable = uniqueDates.length > 1;
 
-  // Get unique AM/PM values
+  
   const uniqueAmPm = Array.from(new Set(userTransactions.map(t => (new Date(t.date).getHours() >= 12 ? 'PM' : 'AM'))));
   const isAmPmSortable = uniqueAmPm.length > 1;
 
@@ -110,7 +110,7 @@ const TransactionHistory = () => {
           <Typography variant="h4" fontWeight={700} mb={2} align="center">
             Transaction History
           </Typography>
-          {/* Date Range Filter */}
+          
           <Box mb={3} display="flex" justifyContent="center" gap={2}>
             <TextField
               label="From Date"
@@ -171,7 +171,7 @@ const TransactionHistory = () => {
           ) : (
             <Typography align="center" color="text.secondary">No transactions found.</Typography>
           )}
-          {/* Pagination Controls */}
+          
           <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={3}>
             {totalPages > 1 && (
               <>

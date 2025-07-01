@@ -75,7 +75,6 @@ function App() {
       <CssBaseline />
       <BalanceProvider>
         <div className="animated-gradient-bg"></div>
-        {/* Infographic SVGs for background */}
         <svg className="infographic-svg atm-svg" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="20" width="100" height="150" rx="12" stroke="#fff" strokeWidth="2" className="atm-outline"/>
           <rect x="30" y="40" width="60" height="20" rx="3" stroke="#fff" strokeWidth="2" className="atm-slot"/>
