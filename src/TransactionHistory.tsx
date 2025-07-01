@@ -2,18 +2,36 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBalance } from './BalanceContext';
 import Button from '@mui/material/Button';
-import { Paper, Box, Typography } from '@mui/material';
+import { Paper, Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { motion } from 'framer-motion';
+import type { SelectChangeEvent } from '@mui/material';
+
+const PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
 
 const TransactionHistory = () => {
   const navigate = useNavigate();
   const { getTransactionHistory } = useBalance();
 
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }>({ key: 'date', direction: 'desc' });
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(PAGE_SIZE_OPTIONS[1]); // default 10
 
   const userTransactions = getTransactionHistory();
 
-  const sortedTransactions = [...userTransactions].sort((a, b) => {
+  // Filter by date range
+  const filteredTransactions = userTransactions.filter(t => {
+    const txDate = new Date(t.date);
+    const from = fromDate ? new Date(fromDate) : null;
+    const to = toDate ? new Date(toDate) : null;
+    if (from && txDate < from) return false;
+    if (to && txDate > to) return false;
+    return true;
+  });
+
+  // Sort
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
     let aValue: any = a;
     let bValue: any = b;
     switch (sortConfig.key) {
@@ -45,6 +63,10 @@ const TransactionHistory = () => {
     return 0;
   });
 
+  // Pagination
+  const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
+  const paginatedTransactions = sortedTransactions.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
   // Get unique dates
   const uniqueDates = Array.from(new Set(userTransactions.map(t => new Date(t.date).toLocaleDateString())));
   const isDateSortable = uniqueDates.length > 1;
@@ -66,6 +88,15 @@ const TransactionHistory = () => {
     navigate('/');
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
+  };
+
+  const handleItemsPerPageChange = (event: SelectChangeEvent) => {
+    setItemsPerPage(Number(event.target.value));
+    setPage(1);
+  };
+
   return (
     <Box minHeight="70vh" display="flex" alignItems="center" justifyContent="center">
       <motion.div
@@ -79,6 +110,25 @@ const TransactionHistory = () => {
           <Typography variant="h4" fontWeight={700} mb={2} align="center">
             Transaction History
           </Typography>
+          {/* Date Range Filter */}
+          <Box mb={3} display="flex" justifyContent="center" gap={2}>
+            <TextField
+              label="From Date"
+              type="date"
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={fromDate}
+              onChange={e => { setFromDate(e.target.value); setPage(1); }}
+            />
+            <TextField
+              label="To Date"
+              type="date"
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={toDate}
+              onChange={e => { setToDate(e.target.value); setPage(1); }}
+            />
+          </Box>
           {sortedTransactions.length > 0 ? (
             <Box sx={{ overflowX: 'auto' }}>
               <table style={{ margin: '0 auto', borderCollapse: 'collapse', minWidth: '600px' }}>
@@ -100,7 +150,7 @@ const TransactionHistory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedTransactions.map((transaction, index) => {
+                  {paginatedTransactions.map((transaction, index) => {
                     const dateObj = new Date(transaction.date);
                     const dateStr = dateObj.toLocaleDateString();
                     const timeStr = dateObj.toLocaleTimeString();
@@ -121,6 +171,29 @@ const TransactionHistory = () => {
           ) : (
             <Typography align="center" color="text.secondary">No transactions found.</Typography>
           )}
+          {/* Pagination Controls */}
+          <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={3}>
+            {totalPages > 1 && (
+              <>
+                <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Previous</Button>
+                <Typography>{page} / {totalPages}</Typography>
+                <Button onClick={() => handlePageChange(page + 1)} disabled={page === totalPages}>Next</Button>
+              </>
+            )}
+            <FormControl size="small" sx={{ minWidth: 120, ml: 2 }}>
+              <InputLabel id="items-per-page-label">Rows per page</InputLabel>
+              <Select
+                labelId="items-per-page-label"
+                value={itemsPerPage.toString()}
+                label="Rows per page"
+                onChange={handleItemsPerPageChange}
+              >
+                {PAGE_SIZE_OPTIONS.map(opt => (
+                  <MenuItem key={opt} value={opt.toString()}>{opt}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
           <Box display="flex" justifyContent="center">
             <Button
               variant="outlined"
