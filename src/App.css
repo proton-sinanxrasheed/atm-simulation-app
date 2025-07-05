@@ -1,42 +1,426 @@
-#root {
-  max-width: 1280px;
+/* App-specific styles that extend the global design system */
+
+.min-height-screen {
+  min-height: 100vh;
+  padding: var(--spacing-8) 0;
+}
+
+/* Homepage Styles */
+.atm-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-icon {
+  padding: var(--spacing-4);
+  background: linear-gradient(135deg, var(--white) 0%, var(--neutral-50) 100%);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
+}
+
+.logo-icon:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl);
+}
+
+.main-title {
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue) 0%,
+    var(--secondary-blue) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--neutral-600);
+  font-weight: 400;
+}
+
+.welcome-card {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
+}
+
+.action-buttons {
+  flex-wrap: wrap;
+}
+
+.security-features {
+  font-size: var(--font-size-sm);
+  color: var(--neutral-500);
+}
+
+.text-success {
+  color: var(--success-green);
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+/* Authentication Pages */
+.auth-container {
+  min-height: 100vh;
+  padding: var(--spacing-8) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-4);
+}
+
+.auth-logo .logo-icon {
+  transform: scale(0.8);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-6);
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-8);
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  min-height: 100vh;
+  padding: var(--spacing-8) 0;
+  background: linear-gradient(
+    135deg,
+    var(--very-light-blue) 0%,
+    var(--neutral-50) 100%
+  );
+}
+
+.dashboard-header {
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue) 0%,
+    var(--secondary-blue) 100%
+  );
+  color: var(--white);
+  padding: var(--spacing-8) 0;
+  margin-bottom: var(--spacing-8);
+}
+
+.dashboard-welcome {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.dashboard-welcome h1 {
+  color: var(--white);
+  margin-bottom: var(--spacing-2);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.dashboard-welcome p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--font-size-lg);
+}
+
+.dashboard-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-8);
+}
+
+.dashboard-card {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary-blue);
+}
+
+.dashboard-card-content {
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+.dashboard-card-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto var(--spacing-4);
+  padding: var(--spacing-4);
+  background: linear-gradient(
+    135deg,
+    var(--light-blue) 0%,
+    var(--accent-blue) 100%
+  );
+  border-radius: var(--radius-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+}
+
+.dashboard-card:hover .dashboard-card-icon {
+  transform: scale(1.1);
+}
+
+.dashboard-card h3 {
+  margin-bottom: var(--spacing-2);
+  color: var(--neutral-800);
+}
+
+.dashboard-card p {
+  font-size: var(--font-size-sm);
+  color: var(--neutral-600);
+}
+
+.sign-out-section {
+  text-align: center;
+  padding-top: var(--spacing-8);
+  border-top: 1px solid var(--neutral-200);
+}
+
+/* Transaction and Balance Pages */
+.page-container {
+  min-height: 100vh;
+  padding: var(--spacing-8) 0;
+  background: linear-gradient(
+    135deg,
+    var(--very-light-blue) 0%,
+    var(--neutral-50) 100%
+  );
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.page-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+}
+
+.balance-display {
+  background: linear-gradient(135deg, var(--success-green) 0%, #047857 100%);
+  color: var(--white);
+  padding: var(--spacing-8);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+  box-shadow: var(--shadow-lg);
+}
+
+.balance-amount {
+  font-size: var(--font-size-4xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-2);
+}
+
+.balance-label {
+  font-size: var(--font-size-lg);
+  opacity: 0.9;
+}
+
+.transaction-form {
+  background: var(--white);
+  padding: var(--spacing-8);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: var(--spacing-8);
+}
+
+.amount-input-group {
+  margin-bottom: var(--spacing-6);
+}
+
+.amount-input {
+  font-size: var(--font-size-xl);
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Transaction History Table */
+.transaction-table-container {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: var(--spacing-8);
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-table th {
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue) 0%,
+    var(--secondary-blue) 100%
+  );
+  color: var(--white);
+  padding: var(--spacing-4) var(--spacing-6);
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.transaction-table th:hover {
+  background: var(--primary-blue-hover);
+}
+
+.transaction-table td {
+  padding: var(--spacing-4) var(--spacing-6);
+  border-bottom: 1px solid var(--neutral-100);
+  font-size: var(--font-size-sm);
+}
+
+.transaction-table tbody tr:hover {
+  background: var(--neutral-50);
+}
+
+.transaction-type {
+  font-weight: 600;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.transaction-type.deposit {
+  background: var(--success-green-light);
+  color: var(--success-green);
+}
+
+.transaction-type.withdraw {
+  background: var(--warning-orange-light);
+  color: var(--warning-orange);
+}
+
+.transaction-amount {
+  font-weight: 600;
+  font-family: "Courier New", monospace;
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-12);
+  color: var(--neutral-500);
+}
+
+.empty-state-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--spacing-4);
+  opacity: 0.5;
+}
+
+/* Back Button */
+.back-button-container {
+  text-align: center;
+  margin-top: var(--spacing-8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .min-height-screen {
+    padding: var(--spacing-4) 0;
   }
-  to {
-    transform: rotate(360deg);
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .security-features .flex {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .page-content {
+    padding: 0 var(--spacing-3);
+  }
+
+  .balance-amount {
+    font-size: var(--font-size-3xl);
+  }
+
+  .transaction-table {
+    font-size: var(--font-size-xs);
+  }
+
+  .transaction-table th,
+  .transaction-table td {
+    padding: var(--spacing-2) var(--spacing-3);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 480px) {
+  .welcome-card {
+    margin: 0 var(--spacing-3);
   }
-}
 
-.card {
-  padding: 2em;
-}
+  .auth-card {
+    margin: 0 var(--spacing-3);
+  }
 
-.read-the-docs {
-  color: #888;
+  .dashboard-card-content {
+    padding: var(--spacing-6);
+  }
+
+  .balance-amount {
+    font-size: var(--font-size-2xl);
+  }
 }

@@ -17,7 +17,7 @@ interface UserTransactions {
 interface BalanceContextType {
   balances: UserBalance;
   currentUser: string | null;
-  setCurrentUser: (username: string) => void;
+  setCurrentUser: (username: string | null) => void;
   depositMoney: (username: string, amount: number) => void;
   withdrawMoney: (username: string, amount: number) => boolean;
   getTransactionHistory: () => Transaction[];
@@ -30,7 +30,10 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
     const stored = localStorage.getItem('balances');
     return stored ? JSON.parse(stored) : {};
   });
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [currentUser, setCurrentUserState] = useState<string | null>(() => {
+    const stored = localStorage.getItem('currentUser');
+    return stored ? JSON.parse(stored) : null;
+  });
   const [transactionHistory, setTransactionHistory] = useState<UserTransactions>(() => {
     const stored = localStorage.getItem('transactionHistory');
     return stored ? JSON.parse(stored) : {};
@@ -43,6 +46,15 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
   }, [transactionHistory]);
+
+  const setCurrentUser = (username: string | null) => {
+    setCurrentUserState(username);
+    if (username) {
+      localStorage.setItem('currentUser', JSON.stringify(username));
+    } else {
+      localStorage.removeItem('currentUser');
+    }
+  };
 
   const depositMoney = (username: string, amount: number) => {
     setBalances(prevBalances => ({
