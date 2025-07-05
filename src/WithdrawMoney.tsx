@@ -368,7 +368,7 @@ const WithdrawMoney = () => {
             </div>
           </div>
 
-          <div className="card slide-up" style={{ animationDelay: "0.4s" }}>
+          <div className="card slide-up mb-8" style={{ animationDelay: "0.4s" }}>
             <div className="card-body">
               <h4 className="mb-4">Withdrawal Information</h4>
               <div className="text-sm text-neutral-600 space-y-2">
