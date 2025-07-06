@@ -1,0 +1,32 @@
+const thKey = "transactionHistory";
+const username = "Sinan Rasheed"; // Use the exact string as in your storage
+
+// Load or initialize the transactionHistory object
+let thData = JSON.parse(localStorage.getItem(thKey) || '{}');
+
+// Make sure the user's transaction array exists
+if (!Array.isArray(thData[username])) {
+  thData[username] = [];
+}
+
+// Optionally, clear old transactions if you want only dummy data
+// thData[username] = [];
+
+const types = ["deposit", "withdraw"];
+const now = Date.now();
+
+for (let i = 0; i < 120; i++) {
+  const type = types[Math.floor(Math.random() * types.length)];
+  const amount = parseFloat((Math.random() * 1000 + 10).toFixed(2));
+  // Spread transactions over the last 120 days
+  const date = new Date(now - Math.floor(Math.random() * 1000 * 60 * 60 * 24 * 120)).toISOString();
+  thData[username].push({ type, amount, date });
+}
+
+// Optionally, sort by date descending
+thData[username].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+// Save back to localStorage
+localStorage.setItem(thKey, JSON.stringify(thData));
+
+alert(`Now ${thData[username].length} transactions for user ${username} in transactionHistory`);
